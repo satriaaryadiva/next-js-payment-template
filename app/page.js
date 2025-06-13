@@ -1,12 +1,27 @@
 "use client";
 
 import Image from "next/image";
-import { product } from "./libs/product";
+import { product } from "./components/libs/product";
 import Checkout from "./components/Checkout";
 import { useEffect } from "react";
 
 export default function Home() {
   useEffect(() => {
+    const snapScript = process.env.NEXT_PUBLIC_API;
+    const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+
+    const script = document.createElement("script");
+
+    script.src = snapScript;
+   
+    script.setAttribute("data-client-key", clientKey);
+    script.async = true;
+    
+    document.body.appendChild(script);
+    return () => {
+      // Cleanup script element on unmount
+      document.body.removeChild(script);
+    };
     // render midtrans snap token
   }, []);
 
